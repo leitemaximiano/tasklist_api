@@ -1,9 +1,19 @@
 const { Router } = require('express')
+const { taskController } = require('./controllers')
 
 const routes = new Router()
 
-routes.get('/', function(request, response) {
-    return response.send('<h1>HELLO WORLD</h1>')
-})
+function resolver (handlerFn) {
+    return (req, res, next) => {
+      return Promise.resolve(handlerFn(req, res, next))
+        .catch(e => next(e))
+    }
+}
+
+// Router Task
+routes.get('/tasks', resolver(taskController.getAll))
+routes.get('/tasks/:id', resolver(taskController.getOne))
+routes.patch('/tasks', resolver(taskController.edit))
+routes.delete('/tasks', resolver(taskController.remove))
 
 module.exports = routes
