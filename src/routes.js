@@ -13,6 +13,7 @@ function resolver (handlerFn) {
 // Router Task
 routes.get('/tasks', resolver(taskController.getAll))
 routes.get('/tasks/:id', resolver(taskController.getOne))
+routes.post('/tasks', resolver(taskController.insert))
 routes.patch('/tasks', resolver(taskController.edit))
 routes.delete('/tasks', resolver(taskController.remove))
 

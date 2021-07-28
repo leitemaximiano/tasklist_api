@@ -5,17 +5,18 @@ const app = express()
 
 app.use(express.json())
 /* Middleware de tratamento de error */
+app.use(routes)
 app.use((error, req, res, next) => {
     if (error && error.statusCode) {
-        res.status(error.statusCode).json({
+        return res.status(error.statusCode).json({
             statusCode: error.statusCode,
             message: error.message
         })
-    } else {
-        console.log(error);
+    }
+    if(error) {
+        return res.json({ message: error.message })
     }
     next()
 })
-app.use(routes)
 
 module.exports = app
